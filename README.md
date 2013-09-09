@@ -41,6 +41,7 @@ not have full functionality to check number of children and sequence etc.
 However, one can use validating reader to overcome this. But in future, I'd like
 to add these validating combinators as well. 
 
+I have written this in early 2013. Hopefully, I'll get to work with it again.
 
 
 
