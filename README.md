@@ -41,6 +41,10 @@ not have full functionality to check number of children and sequence etc.
 However, one can use validating reader to overcome this. But in future, I'd like
 to add these validating combinators as well. 
 
+The main file to look at is FS/XmlIterator/XmlIterator/XmlIterator.fs 
+Rest of the code is mostly comprised off tests, utilities that may or may not be
+used in the above file.
+
 I have written this in early 2013. Hopefully, I'll get to work with it again.
 
 
