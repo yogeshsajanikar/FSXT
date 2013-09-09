@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "XmlIterator", "XmlIterator\XmlIterator.fsproj", "{B595EED8-235E-44AE-B891-94B760697F97}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Collections", "Collections\Collections.fsproj", "{233A22A1-86E0-496F-8605-13334872B1C5}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "XmlParser", "XmlParser\XmlParser.fsproj", "{D3C853D9-C1A3-41D5-B420-30559BD13E99}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B595EED8-235E-44AE-B891-94B760697F97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B595EED8-235E-44AE-B891-94B760697F97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B595EED8-235E-44AE-B891-94B760697F97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B595EED8-235E-44AE-B891-94B760697F97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{233A22A1-86E0-496F-8605-13334872B1C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{233A22A1-86E0-496F-8605-13334872B1C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{233A22A1-86E0-496F-8605-13334872B1C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{233A22A1-86E0-496F-8605-13334872B1C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3C853D9-C1A3-41D5-B420-30559BD13E99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3C853D9-C1A3-41D5-B420-30559BD13E99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3C853D9-C1A3-41D5-B420-30559BD13E99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3C853D9-C1A3-41D5-B420-30559BD13E99}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
