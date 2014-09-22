@@ -79,9 +79,7 @@ module XmlModule =
         | LazyList.Cons(y,ys) -> Console.WriteLine("{0}", y)
                                  debug ys
 
-    let count (xs:XNode LazyList) = 
-        let rec count' xs i =
+    let rec count (xs:XNode LazyList) i = 
             match xs with 
             | LazyList.Nil -> i
-            | LazyList.Cons(y,ys) -> count' ys (i+1)
-        count' xs 0
+            | LazyList.Cons(_,ys) -> count ys (i+1)
