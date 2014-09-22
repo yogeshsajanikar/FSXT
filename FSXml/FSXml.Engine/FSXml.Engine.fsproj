@@ -11,7 +11,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -43,6 +43,14 @@
     <Compile Include="XmlTree.fs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="FsControl.Core">
+      <HintPath>..\packages\FsControl.1.0.9\lib\net40\FsControl.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FSharpPlus">
+      <HintPath>..\packages\FSharpPlus.0.0.4\lib\net40\FSharpPlus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="FSharpx.Collections">
       <HintPath>..\packages\FSharpx.Collections.1.9.3\lib\net35\FSharpx.Collections.dll</HintPath>
       <Private>True</Private>

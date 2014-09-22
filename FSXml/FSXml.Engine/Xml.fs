@@ -55,13 +55,26 @@ module XmlModule =
                 | XmlNodeType.DocumentFragment  -> failwith <| "Does not handle document fragment"
                 | _                                 -> XSkipped
 
-            let unfolder (reader:XmlReader) = 
-                if reader.Read() then 
-                    Some (toXNode reader, reader)
-                else
-                    None
 
-            LazyList.unfold unfolder reader
+            let isElement (x:XNode) = 
+                match x with 
+                | XElement _    -> true
+                | _             -> false
+
+            let rec unfolder ((reader,state) : XmlReader * bool)  = 
+                if state then
+                    if reader.IsEmptyElement then
+                        Some (XEndElement reader.LocalName, (reader, false))
+                    else
+                        unfolder (reader, false)
+                else
+                    if reader.Read() then 
+                        let x = toXNode reader
+                        Some (x, (reader, isElement x))
+                    else
+                        None
+
+            LazyList.unfold unfolder (reader,false)
 
             static member count (xs:XNode LazyList) = 
                     let rec count' xs i = 
