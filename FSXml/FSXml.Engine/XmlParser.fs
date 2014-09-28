@@ -1,59 +1,72 @@
-﻿namespace Data.Xml.Tree
+﻿namespace Data.Parser.Xml 
 
 
 [<AutoOpen>]
-module XmlTreeModule = 
+module XmlParserModule = 
 
     open FSharpx.Collections
     open FSharpx.Collections.Experimental
     open Data.Xml.Engine
+    open Data.Parser
 
-    type XmlTree = 
-        XNode RoseTree 
+    type XmlState = XNode list State 
 
+    type XmlInput = Input<XNode, XmlState>
 
-    type LazyListFunc<'t,'a> = 
-        LazyListFunc of ('t LazyList -> ('a * 't LazyList) option)
-
-    let runL (LazyListFunc f) x = f x
-
-    type LazyListBuilder () =
-        class
-            member this.Bind (ma : LazyListFunc<'t,'a>, fab: 'a -> LazyListFunc<'t,'b>) = 
-                let mb = fun xs -> 
-                    match runL ma xs with
-                    | None          -> None
-                    | Some (a, ys)  -> runL (fab a) ys
-                LazyListFunc mb 
-
-            member this.Return (t:'a) = 
-                let ma = fun xs -> Some (t, xs)
-                LazyListFunc ma
-
-            //member this.Zero () = LazyListFunc (fun _ -> None)
-                    
-        end 
-        
-    let do' = LazyListBuilder ()
+    type XmlOutput = Output<XmlTree, XNode, XmlState> 
+       
+    type XmlTransf = Transf<XmlTree, XNode, XmlState> 
 
 
-    let (+++) (ma: LazyListFunc<'t,'a>) (na: LazyListFunc<'t,'a>) = 
-        let ma xs = 
-            match runL ma xs with
-            | None              -> runL na xs
-            | Some y            -> Some y
-        LazyListFunc ma 
+    let matchStart s = fun x -> match x with 
+                                | XElement (t,_) -> s = t 
+                                | _              -> false
 
-    let rec many1 (ma: LazyListFunc<'t,'a>) : LazyListFunc<'t, 'a LazyList> = 
-        do' {
-                let! x  = ma 
-                let! xs = many ma
-                return (LazyList.cons x xs)
+    
+
+    let matchEnd s = fun x -> match x with 
+                              | XEndElement t -> s = t
+                              | _             -> false
+
+
+    let xstart s = matchStart s |> matchT 
+
+
+    let xend s = matchEnd s |> matchT
+
+    let matchText = fun x -> match x with 
+                               | XText _ -> true
+                               | _       -> false
+
+    //type Transf<'t> = Transf<XNode, XNode, 't>
+
+    let xtext () = matchT matchText
+
+    let pushState x = 
+        transf {
+                    let! s = getState
+                    return x::s
+               }
+
+    let popState ()  = 
+        transf 
+            {
+                let! s = getState
+                match s with 
+                | (x :: xs)     -> return x 
+                | _             -> return! (failP "No state to pop")
             }
 
-    and many (ma: LazyListFunc<'t,'a>) = (many1 ma) +++ (do' { return LazyList.empty } )
 
-   
+    let xbracket before inner after = 
+        transf {
+                    let! xst = before
+                    pushState xst |> ignore
+                    let! inn = inner
+                    let! xed = after
+                    popState () |> ignore
+                    return xst
+               }
 
-
+    let simpleElement s = xbracket (xstart s) (xtext ()) (xend s)
 

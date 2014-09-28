@@ -40,16 +40,16 @@
     <Compile Include="Script.fsx" />
     <Compile Include="Xml.fs" />
     <None Include="packages.config" />
-    <Compile Include="XmlTree.fs" />
+    <Compile Include="Parser.fs">
+    </Compile>
+    <Compile Include="XmlParser.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharpx.Collections">
       <HintPath>..\packages\FSharpx.Collections.1.9.3\lib\net35\FSharpx.Collections.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="FSharpx.Collections.Experimental">
       <HintPath>..\packages\FSharpx.Collections.Experimental.1.9.3\lib\net35\FSharpx.Collections.Experimental.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core" />

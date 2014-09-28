@@ -14,7 +14,7 @@ module XmlModule =
     type XAttribs = XAttrib list 
 
     type XNode = 
-        | XElement of string * XAttribs * XNode LazyList
+        | XElement of string * XAttribs 
         | XEndElement of string
         | XText of string
         | XComment of string
@@ -24,7 +24,7 @@ module XmlModule =
 
         override x.ToString() = 
             match x with 
-            | XElement (s,ats,xs)   -> (s,ats,xs).ToString()
+            | XElement (s,ats)      -> (s,ats).ToString()
             | XEndElement s         -> ""
             | XText s               -> "Text:" + s
             | XComment s            -> "Comment:" + s
@@ -39,7 +39,7 @@ module XmlModule =
                 | XmlNodeType.Comment           -> XComment reader.Value
                 | XmlNodeType.Document          -> XDocument 
                 | XmlNodeType.DocumentType      -> XDocType reader.Value
-                | XmlNodeType.Element           -> XElement (reader.LocalName, list.Empty, LazyList.empty)
+                | XmlNodeType.Element           -> XElement (reader.LocalName, list.Empty)
                 | XmlNodeType.EndElement        -> XEndElement reader.LocalName
                 | XmlNodeType.Text              -> XText reader.Value
                 | XmlNodeType.Whitespace        -> XSkipped
@@ -85,3 +85,8 @@ module XmlModule =
             | LazyList.Nil -> i
             | LazyList.Cons(y,ys) -> count' ys (i+1)
         count' xs 0
+
+
+    open FSharpx.Collections.Experimental
+ 
+    type XmlTree = XmlTree of xtree : XNode RoseTree 

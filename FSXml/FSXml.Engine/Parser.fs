@@ -1,15 +1,15 @@
-﻿namespace Data.Tree
+﻿namespace Data.Parser
 
 
 [<AutoOpen>]
-module TreeModule = 
+module ParserModule = 
 
     open System
     open FSharpx.Collections
     open FSharpx.Collections.Experimental
 
 
-    type 's State = State of 's
+    type 's State = State of state : 's
 
     // Input comprising of token list and a state 's
     type Input<'token, 's> = { IStream : 'token LazyList ; IState : 's State }
@@ -25,6 +25,9 @@ module TreeModule =
 
     let runTransformer t inp s = t.Transf { IStream = inp; IState = s }
 
+    let fail s e = { Out = None; Next = { IStream = LazyList.empty; IState = s }; Error = e }
+
+
     type Transformer () =
         class
             member this.Bind (f : Transf<'a, 'token, 's>, fab : 'a -> Transf<'b, 'token, 's>) = 
@@ -36,6 +39,13 @@ module TreeModule =
             member this.Return (t: 'a) = 
                 let transf inp = { Out = Some t; Next = inp; Error = String.Empty }
                 { Transf = transf }
+
+            member this.Zero () = 
+                let transf inp =
+                    { Out = None; Next = inp; Error = String.Empty }
+                { Transf = transf }
+
+            member this.ReturnFrom (f : Transf<'a, 'token, 's> ) = f
         end
 
 
@@ -62,10 +72,6 @@ module TreeModule =
 
     and many ma = (many1 ma) <||> (transf { return LazyList.empty } )
 
-    let liftState (f : 's -> 't ) =
-        fun (State s) -> State (f s)
-
-    let fail s e = { Out = None; Next = { IStream = LazyList.empty; IState = s }; Error = e }
 
     let matchT (f : 'token -> bool) : Transf<'token, 'token, 's> = 
         let matchF (inp: Input<'token, 's> ) = 
@@ -76,5 +82,27 @@ module TreeModule =
                                        else
                                             fail inp.IState "No match"
         { Transf = matchF }
+
+    open System
+
+    let liftState s = State s
+    let getState' (State s) = s
+
+    let putState s = 
+        let withStateT inp = 
+            let inpS = { IStream = inp.IStream; IState = liftState s }
+            { Out = Some s; Next = inpS; Error = String.Empty }
+        { Transf = withStateT }
+
+
+    let getState =
+        let withStateT inp =
+            { Out = Some (getState' inp.IState); Next = inp; Error = String.Empty }
+        { Transf = withStateT }
+
+    let failP e = 
+        let failT inp = 
+            { Out = None; Next = inp; Error = e }
+        {Transf = failT }
 
     
