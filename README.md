@@ -27,5 +27,7 @@ deserialization of XML documents.
 
 
 
+# Note #
+This is based on previous implementation (still part of this repository but will be removed in future). The idea is to have seamless integration between user defined data type (can be in c#) and XML serialization and deserialization. The future plan includes generation of parsers from xsd, and filters.
 
 
