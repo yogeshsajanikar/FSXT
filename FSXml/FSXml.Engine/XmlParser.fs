@@ -65,6 +65,7 @@ module XmlParserModule =
                     let! inn = inner
                     let! xed = after
                     popState () |> ignore
+
                     return xst
                }
 
