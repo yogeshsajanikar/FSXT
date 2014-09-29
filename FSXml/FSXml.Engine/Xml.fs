@@ -6,22 +6,32 @@ open System.Xml
 [<AutoOpen>]
 module XmlModule = 
 
+    // Represents a single attribute
     type XAttrib = XAttrib of string * string
                     override xat.ToString() = 
                         match xat with
                         | XAttrib (s,v) -> s + " " + v
 
+    // List of attributes
     type XAttribs = XAttrib list 
 
     type XNode = 
+        // Elment with its name and attributes
         | XElement of string * XAttribs 
+        // End of the element 
         | XEndElement of string
+        // Contents of the the element, can be CDATA or text
         | XText of string
+        // Comment (skipped)
         | XComment of string
+        // Document, containing element
         | XDocument 
+        // Type of document, skipped
         | XDocType of string 
+        // All other elements are skipped
         | XSkipped
 
+        // Convert element to string
         override x.ToString() = 
             match x with 
             | XElement (s,ats)      -> (s,ats).ToString()

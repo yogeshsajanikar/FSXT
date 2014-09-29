@@ -27,6 +27,11 @@ module ParserModule =
 
     let fail s e = { Out = None; Next = { IStream = LazyList.empty; IState = s }; Error = e }
 
+    let empty = 
+        let transf inp =
+            { Out = None; Next = inp; Error = String.Empty }
+        { Transf = transf }
+
 
     type Transformer () =
         class
@@ -40,10 +45,7 @@ module ParserModule =
                 let transf inp = { Out = Some t; Next = inp; Error = String.Empty }
                 { Transf = transf }
 
-            member this.Zero () = 
-                let transf inp =
-                    { Out = None; Next = inp; Error = String.Empty }
-                { Transf = transf }
+            member this.Zero () = empty
 
             member this.ReturnFrom (f : Transf<'a, 'token, 's> ) = f
         end
@@ -70,7 +72,11 @@ module ParserModule =
                 return (LazyList.cons x xs)
                }
 
-    and many ma = (many1 ma) <||> (transf { return LazyList.empty } )
+    and many ma = 
+        transf {
+                    let! xs = many1 ma <||> empty
+                    return xs
+               }
 
 
     let matchT (f : 'token -> bool) : Transf<'token, 'token, 's> = 

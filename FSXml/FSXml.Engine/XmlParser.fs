@@ -65,9 +65,20 @@ module XmlParserModule =
                     let! inn = inner
                     let! xed = after
                     popState () |> ignore
-
                     return xst
                }
 
     let simpleElement s = xbracket (xstart s) (xtext ()) (xend s)
 
+    let rec xmany1 t = 
+        transf {
+                    let! x = t
+                    let! xs = xmany t
+                    return (x :: xs) 
+                }
+
+    and xmany t = 
+        transf {
+                    let! xs = (xmany1 t) <||> empty
+                    return xs
+                }
