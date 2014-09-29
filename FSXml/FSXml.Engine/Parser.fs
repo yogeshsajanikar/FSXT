@@ -9,7 +9,7 @@ module ParserModule =
     open FSharpx.Collections.Experimental
 
 
-    type 's State = State of state : 's
+    type 's State = State of 's
 
     // Input comprising of token list and a state 's
     type Input<'token, 's> = { IStream : 'token LazyList ; IState : 's State }

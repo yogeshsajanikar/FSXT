@@ -89,4 +89,4 @@ module XmlModule =
 
     open FSharpx.Collections.Experimental
  
-    type XmlTree = XmlTree of xtree : XNode RoseTree 
+    type XmlTree = XmlTree of XNode RoseTree 
