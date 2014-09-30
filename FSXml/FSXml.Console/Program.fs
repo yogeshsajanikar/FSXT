@@ -4,6 +4,7 @@ open System.Xml
 open Data.Xml.Engine
 open Data.Parser
 open Data.Parser.Xml
+open FSharpx.Collections
 
 
 let test1 () = 
@@ -23,11 +24,21 @@ let test2 () =
     let xlist  = XNode.ofReader xmlreader
     runTransformer parser1 xlist (liftState [])
 
+let test3 () = 
+    let xmlstr = "<A>Text</A>"
+//    let xmlstr = "<A><B>Text</B></A>"
+    let strreader = new StringReader(xmlstr)
+    let xmlreader = XmlReader.Create(strreader :> TextReader )
+    let xlist  = XNode.ofReader xmlreader
+    runTransformer (genericXml ()) xlist (liftState [])
+
 
 [<EntryPoint>]
 let main argv = 
-    test1 () |> fun out -> printf "%A\n" out.Out 
-    test2 () |> fun out -> printf "%A\n" out.Out 
+//    test1 () |> fun out -> printf "%A\n" out.Out 
+//    test2 () |> fun out -> printf "%A\n" out.Out 
+//    test3 () |> fun out -> printf "%A\n" out.Out 
+    runTransformer (testPutX ()) LazyList.empty (State XDocument) |> fun out -> printf "%A\n" out.Out
     0
 (* 
     if (argv.Length <> 1) then 

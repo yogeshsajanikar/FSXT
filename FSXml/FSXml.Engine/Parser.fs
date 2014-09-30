@@ -48,6 +48,9 @@ module ParserModule =
             member this.Zero () = empty
 
             member this.ReturnFrom (f : Transf<'a, 'token, 's> ) = f
+
+            member this.Combine (a,b) = 
+                this.Bind(a,(fun _ -> b))
         end
 
 
@@ -96,13 +99,15 @@ module ParserModule =
 
     let putState s = 
         let withStateT inp = 
-            let inpS = { IStream = inp.IStream; IState = liftState s }
+            printf "putting up state: %A" s
+            let inpS = { inp with IState = liftState s }
             { Out = Some s; Next = inpS; Error = String.Empty }
         { Transf = withStateT }
 
 
     let getState =
         let withStateT inp =
+            printf "getting up state: %A" inp
             { Out = Some (getState' inp.IState); Next = inp; Error = String.Empty }
         { Transf = withStateT }
 

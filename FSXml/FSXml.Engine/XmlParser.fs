@@ -28,6 +28,10 @@ module XmlParserModule =
                               | XEndElement t -> s = t
                               | _             -> false
 
+    let matchStartAny = fun x -> match x with
+                                 | XElement (_,_) -> true
+                                 | _              -> false
+
 
     let xstart s = matchStart s |> matchT 
 
@@ -45,7 +49,7 @@ module XmlParserModule =
     let pushState x = 
         transf {
                     let! s = getState
-                    return x::s
+                    return! putState (x::s)
                }
 
     let popState ()  = 
@@ -81,4 +85,42 @@ module XmlParserModule =
         transf {
                     let! xs = (xmany1 t) <||> empty
                     return xs
+                }
+
+    let getName x = match x with 
+                    | XElement (n,_) -> n
+                    | _ -> failwith <| "Invalid element"
+
+    let rec genericXml () = 
+        transf {
+                    let! x = matchStartAny |> matchT
+                    let s  = getName x
+
+                    pushState x 
+
+                    let! xt = (xtext ()) <||> empty
+
+                    pushState xt |> ignore
+
+                    let! inners = many (genericXml ())
+                    //let! inner = (many (genericXml ()))
+                    let! xe =  xend s
+                   
+                    //return! (getState ())
+                    return! getState
+                }
+
+
+    let testPushX () =
+        transf  {
+                    pushState (XElement ("ABC",[]))
+                    pushState (XElement ("DEF",[]))
+                    return! getState
+                }
+
+    let testPutX () =
+        transf  {
+                    let! y = putState (XElement ("ABC", []))
+                    let! x = getState
+                    return x
                 }

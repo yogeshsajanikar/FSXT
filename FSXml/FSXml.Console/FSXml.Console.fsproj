@@ -4,8 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>767c66b5-ea76-4e90-9fc8-8e9db3312cc7</ProjectGuid>
+    <ProjectGuid>{767C66B5-EA76-4E90-9FC8-8E9DB3312CC7}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>FSXml.Console</RootNamespace>
     <AssemblyName>FSXml.Console</AssemblyName>
@@ -39,16 +38,15 @@
   <ItemGroup>
     <Reference Include="FSharpx.Collections">
       <HintPath>..\packages\FSharpx.Collections.1.9.3\lib\net35\FSharpx.Collections.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="mscorlib" />
-    <Reference Include="FSharp.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Xml" />
+    <Reference Include="FSharp.Core">
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.fs" />
@@ -58,8 +56,7 @@
   <ItemGroup>
     <ProjectReference Include="..\FSXml.Engine\FSXml.Engine.fsproj">
       <Name>FSXml.Engine</Name>
-      <Project>{7ef82ea4-22c5-4019-8058-065db877f913}</Project>
-      <Private>True</Private>
+      <Project>{7EF82EA4-22C5-4019-8058-065DB877F913}</Project>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
